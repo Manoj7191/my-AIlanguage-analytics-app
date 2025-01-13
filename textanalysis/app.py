@@ -8,25 +8,23 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 
 app = Flask(__name__)
-app.secret_key = 'testing_the_app'
+#app.secret_key = 'testing_the_app'
 
 @app.route('/')
 def index():
-   result = session.get('result', None)
-   return render_template('index.html',results=result) 
+   #result = session.get('result', None)
+   return render_template('index.html') 
 
 @app.route('/process_data',methods=['POST'])
 def process_data():
-   location = request.form['location']
-   review_details = GoogleReview("Begin",location).extract_review()
-   tot_reviews = review_details['result']['reviews']
-   output = analyze_reviews(tot_reviews,location)
-   session['result'] = output
-   return redirect(url_for("index"))
-       
-      
+    location = request.form['location']
+    review_details = GoogleReview("Begin",location).extract_review()
+    total_reviews = review_details['result']['reviews']
+    #output = analyze_reviews(tot_reviews,location)
+    #session['result'] = output
+    #return redirect(url_for("index"))  
 #@app.route('/reviews')
-def analyze_reviews(total_reviews,location):
+#def analyze_reviews(total_reviews,location):
     #print(list_of_reviews)  
     #Get Configuration settings
     load_dotenv()
@@ -106,7 +104,7 @@ def analyze_reviews(total_reviews,location):
             
         main_analysis += '-'*30
 
-    return main_analysis
+    return render_template('index.html',results=main_analysis)
     
     
 
