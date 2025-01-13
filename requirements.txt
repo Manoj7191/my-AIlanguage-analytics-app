@@ -1,0 +1,4 @@
+dotenv
+flask
+azure_ai_textanalytics
+wordcloud
