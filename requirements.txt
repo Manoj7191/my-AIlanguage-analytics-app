@@ -1,4 +1,4 @@
-dotenv-0.0.5
+python-dotenv
 flask
 azure_ai_textanalytics
 wordcloud
