@@ -1,5 +1,6 @@
-from dotenv import load_dotenv
-from flask import Flask,render_template,request,redirect,url_for
+
+from dotenv import load_dotenv 
+from flask import Flask,render_template,request,redirect,url_for,session
 from markupsafe import Markup
 import os
 from reviewsextract.google_reviews import GoogleReview
@@ -7,11 +8,11 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 
 app = Flask(__name__)
-
+app.secret_key = 'testing_the_app'
 
 @app.route('/')
 def index():
-   result = request.args.get('result')
+   result = session.get('result', None)
    return render_template('index.html',results=result) 
 
 @app.route('/process_data',methods=['POST'])
@@ -20,8 +21,8 @@ def process_data():
    review_details = GoogleReview("Begin",location).extract_review()
    tot_reviews = review_details['result']['reviews']
    output = analyze_reviews(tot_reviews,location)
-   print(output)
-   return redirect(url_for("index",result=output))
+   session['result'] = output
+   return redirect(url_for("index"))
        
       
 #@app.route('/reviews')
